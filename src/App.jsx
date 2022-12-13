@@ -1,15 +1,24 @@
+import React from 'react'
 import './App.css'
-import HookCounter from './components/HookCounter'
+import DataFetching from './components/dataFetching/DataFetching'
+import HookContainer from './components/hookExamples/HookContainer'
 
-function App() {
+export const UserContext = React.createContext()
+export const UsersContext = React.createContext()
+export default function App() {
   return (
     <div>
-      <HookCounter></HookCounter>
+      {/* <HookContainer></HookContainer> */}
+      <UserContext.Provider value={'user'}>
+        <UsersContext.Provider value={'user2'}>
+          <DataFetching></DataFetching>
+        </UsersContext.Provider>
+      </UserContext.Provider>
     </div>
   )
 }
 
-export default App
+
 /*
 
 function App() {
