@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext, UsersContext } from "../../App";
 
 export default function DataFetching() {
@@ -7,15 +7,26 @@ export default function DataFetching() {
   const [id, setId] = useState(1);
   const userContext = useContext(UserContext);
   const usersContext = useContext(UsersContext);
+  const inputRef = useRef(null);
   useEffect(() => {
+    inputRef.current.focus();
+    let response = "";
     if (id != "") {
       axios
         .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
         .then((res) => {
-          setPosts(res.data);
+          response = res.data;
         })
         .catch((err) => {
+          response = {
+            id: 0,
+            title: "no data found",
+            body: "no data found",
+          };
           console.log(err);
+        })
+        .finally(() => {
+          setPosts(response);
         });
     } else {
       setPosts("");
@@ -30,6 +41,7 @@ export default function DataFetching() {
         className="border-2 border-solid border-sky-500"
         type="text"
         value={id}
+        ref={inputRef}
         onChange={(e) => setId(e.target.value)}
       ></input>
       <div className="mx-auto">{posts.title}</div>
